@@ -82,4 +82,6 @@ select * from hostel;
 
 select * from Student order by dob;
 
-select * from Student join Depertment
+select Student.sname, Student.sex, Student.dob, Student.grade from Student join Depertment on Student.dno = Depertment.dno where(dname = 'CSE');
+
+select * from Faculty order by salary desc;
