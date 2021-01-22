@@ -79,3 +79,7 @@ insert into hostel(hid, hname, seats) values(5,"RCC 5",20);
 
 select * from hostel;
 
+
+select * from Student order by dob;
+
+select * from Student join Depertment
