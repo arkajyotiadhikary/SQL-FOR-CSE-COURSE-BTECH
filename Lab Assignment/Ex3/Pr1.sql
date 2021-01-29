@@ -2,9 +2,9 @@ create database collage;
 show databases;
 use collage;
 
-create table Student (sid int unique, sname varchar(20) not null, sex varchar(1) not null , dob date not null, dno int unique, primary key(sid));
+create table Student (sid int unique, sname varchar(20) not null, sex varchar(1) not null , dob date not null, dno int, grade varchar(1) not null, primary key(sid));
 create table Depertment (dno int unique, dname varchar(20) not null, primary key(dno));
-create table Faculty(f_id int unique, fname varchar(20) not null, designation varchar(10) not null, salary int not null, dno int not null, primary key(f_id), check(salary < 10000));
+create table Faculty(f_id int unique, fname varchar(20) not null, designation varchar(10) not null, salary int not null, dno int not null, primary key(f_id), check(salary < 100000));
 create table course(cid int unique, cname varchar(20), credits varchar(20) not null, dno int not null, primary key(cid));
 create table register(sid int unique, cid int not null, sem varchar(5) not null, primary key(sid));
 create table teaching(f_id int unique, cid int not null, sem varchar(5) not null, primary key(f_id));
@@ -12,15 +12,13 @@ create table hostel(hid int unique, hname varchar(20) not null, seats int not nu
 
 show tables;
 
-alter table Student 
-add grade varchar(1);
-
+-- Q . Insert at least 5 tuples into each table
 
 -- Student Table
 insert into Student(sid, sname, sex, dob, dno, grade) values (1, "Arka", "M", "1999-08-04", 1, "A");
 insert into Student(sid, sname, sex, dob, dno, grade) values (2, "Vikas", "M", "2000-05-14", 2, "F");
 insert into Student(sid, sname, sex, dob, dno, grade) values (3, "Bhaswati", "F", "2012-08-16", 3, "B");
-insert into Student(sid, sname, sex, dob, dno, grade) values (4, "Pallavi", "F", "2001-01-06", 4, "A");
+insert into Student(sid, sname, sex, dob, dno, grade) values (4, "Pallavi", "F", "2001-01-06", 2, "A");
 insert into Student(sid, sname, sex, dob, dno, grade) values (5, "Raj", "M", "1999-08-08", 5, "C");
 
 select * from Student;
@@ -35,11 +33,11 @@ insert into Depertment(dno, dname) values (5,"CIVIL");
 select * from Depertment;
 
 -- Faculty Table
-insert into Faculty(f_id, fname, designation , salary , dno) values (1, "Palash", "MA", 1000, 1);
-insert into Faculty(f_id, fname, designation , salary , dno) values (2, "Naba", "BA", 2000, 2);
-insert into Faculty(f_id, fname, designation , salary , dno) values (3, "Aparajita", "MSC", 1800, 3);
-insert into Faculty(f_id, fname, designation , salary , dno) values (4, "Bhashkar", "BSC", 1500, 4);
-insert into Faculty(f_id, fname, designation , salary , dno) values (5, "Nabanita", "PHD", 5000, 5);
+insert into Faculty(f_id, fname, designation , salary , dno) values (1, "Palash", "MA", 10000, 1);
+insert into Faculty(f_id, fname, designation , salary , dno) values (2, "Naba", "BA", 20000, 2);
+insert into Faculty(f_id, fname, designation , salary , dno) values (3, "Aparajita", "MSC", 18000, 3);
+insert into Faculty(f_id, fname, designation , salary , dno) values (4, "Bhashkar", "BSC", 15000, 4);
+insert into Faculty(f_id, fname, designation , salary , dno) values (5, "Nabanita", "PHD", 50000, 5);
 
 select * from Faculty;
 
@@ -79,9 +77,17 @@ insert into hostel(hid, hname, seats) values(5,"RCC 5",20);
 
 select * from hostel;
 
-
+-- List the student details in accesending order of DOB.
 select * from Student order by dob;
 
-select Student.sname, Student.sex, Student.dob, Student.grade from Student join Depertment on Student.dno = Depertment.dno where(dname = 'CSE');
+-- Display the details of sudent from computer depertment
+select * from Student ,Depertment where Student.dno = Depertment.dno and dname = 'CSE';
 
+-- Display the list of the faculties in order of sallary  
 select * from Faculty order by salary desc;
+
+-- List the total no of student in each depertment  
+select dname, count(s.dno) as no_student from Depertment d, Student s where s.dno = d.dno group by s.dno;
+
+-- Display the total number of faculties in each department with salary greater than 25000
+select dname, count(f.dno) as no_faculty from Depertment d, Faculty f where d.dno = f.dno and f.salary>25000 group by f.dno;
